@@ -7,4 +7,4 @@ Members: Klejdi Cercis, Idris Duka, Gerjan Haxhija, Xhoni Dërvishi, Kevin Rroga
 
 Group leader: Miki Belegu
 
-Hospital Managment System
+Hospital Management System
