@@ -1,0 +1,306 @@
+Find below the PlantUML code for the related diagrams in the documentation for convenience and/or reusability:
+
+State Diagrams
+	Patient
+@startuml
+[*] --> Registered : Patient registers self or through receptionist
+
+Registered : Entry/Enter details
+Registered : Exit/Validate
+Registered --> Idle : Validation
+
+Idle : Do/Update details
+Idle : Do/Delete patient
+Idle : Do/Assign doctor
+Idle : Do/Contact patient
+Idle : Do/Delete patient
+Idle --> Updated : Update Information
+
+Updated : Entry/Update details
+Updated : Exit/Validate
+
+Idle --> Deleted : Delete Patient
+Deleted : Exit/Patient removed
+
+Idle --> Doctor_assigned : Assign Doctor
+Doctor_assigned : Entry/View doctor details
+Doctor_assigned : Exit/Doctor details shown
+
+Idle --> Contacted : Send Message
+Contacted : Entry/Input message text
+Contacted : Exit/Message sent
+
+Updated --> Idle : Back
+Deleted --> [*] : Patient Deleted
+Doctor_assigned --> Idle : Back
+Contacted --> Idle : Sent Successfully
+@enduml
+
+	Receptionist
+@startuml
+[*] --> Registered : Receptionist registers self or through another receptionist
+
+Registered : Entry/Enter details
+Registered : Exit/Validate
+Registered --> Idle : Validation
+
+Idle : Do/Update details
+Idle : Do/Delete receptionist
+Idle : Do/Contact receptionist
+Idle : Do/Delete receptionist
+Idle --> Updated : Update Information
+
+Updated : Entry/Update details
+Updated : Exit/Validate
+
+Idle --> Deleted : Delete Receptionist
+Deleted : Exit/Receptionist removed
+
+Idle --> Contacted : Send Message
+Contacted : Entry/Input message text
+Contacted : Exit/Message sent
+
+Updated --> Idle : Back
+Deleted --> [*] : Receptionist Deleted
+
+Contacted --> Idle : Sent Successfully
+@enduml
+
+	Doctor
+@startuml
+[*] --> Registered : Doctor registers self or through receptionist
+Registered : Entry/Enter details
+Registered : Exit/Validate
+Registered --> Idle : Validation
+Idle : Do/Update details
+Idle : Do/Delete doctor
+Idle : Do/Assign patient
+Idle : Do/Contact doctor
+Idle : Do/Delete doctor
+Idle --> Updated : Update Information
+Updated : Entry/Update details
+Updated : Exit/Validate
+Idle --> Deleted : Delete Doctor
+Deleted : Exit/Doctor removed
+Idle --> Patient_assigned : Assign Patient
+Patient_assigned : Entry/View patient details
+Patient_assigned : Exit/Patient details shown
+Idle --> Contacted : Send Message
+Contacted : Entry/Input message text
+Contacted : Exit/Message sent
+Updated --> Idle : Back
+Deleted --> [*] : Doctor Deleted
+Patient_assigned --> Idle : Back
+Contacted --> Idle : Sent Successfully
+@enduml
+
+	Message
+@startuml
+[*] --> Draft : Composing message
+Draft: Entry/Write message
+Draft: Exit/Send message
+
+Draft --> [*] : Message sent
+@enduml
+
+	Medical Record
+@startuml
+[*] --> Created : Record created along with patient
+
+Created : Entry/Input patient details
+Created : Exit/Validate details
+Created --> Idle : Record created
+
+Idle : Do/Update details
+Idle : Do/Delete record
+Idle : Do/View record
+
+Idle --> Updated : Update information
+Updated : Entry/Modify details
+Updated : Exit/Validate details
+Updated --> Idle : Update completed
+
+Idle --> Deleted : Delete record
+Deleted : Exit/Record removed
+Deleted --> [*] : Record deleted
+
+Idle --> Viewed : View record
+Viewed : Entry/Display details
+Viewed : Exit/Record viewed
+Viewed --> Idle : Viewing completed
+
+Viewed --> Exporting : Export record
+
+Exporting : Entry/Select export format
+Exporting : Exit/Record exported
+
+Exporting --> Idle : Successfully exported
+@enduml
+
+	Feedback
+@startuml
+[*] --> Created : Feedback created by patient
+
+Created : Entry/Input feedback details, rating, comments and name of doctor
+Created : Exit/Validate details
+Created --> Idle : Feedback sent to appropriate staff
+
+Idle : Do/View feedback
+
+Deleted : Exit/Feedback removed
+Deleted --> [*] : Feedback deleted
+
+Idle --> Viewed : Receptionist views feedback
+
+Viewed : Entry/Display details
+Viewed : Exit/Feedback viewed
+Viewed : Do/Delete feedback
+Viewed : Do/Archive feedback
+Viewed --> Idle : Viewing completed
+
+Viewed --> Archived : Feedback accepted
+Archived : Entry/Move to archive
+Archived : Exit/Feedback archived
+Archived --> [*] : Feedback archived
+
+Viewed --> Deleted : Feedback not accepted
+
+@enduml
+
+	Appointment
+@startuml
+[*] --> Scheduled : Begin appointment scheduling by doctor
+
+Scheduled : Entry/Set appointment details
+Scheduled : Exit/Confirm details
+Scheduled --> Idle : Appointment scheduled
+
+Idle : Do/Update appointment
+Idle : Do/Cancel appointment
+Idle : Do/View appointment
+
+Idle --> Updated : Update appointment
+Updated : Entry/Modify details
+Updated : Exit/Confirm changes
+Updated --> Idle : Update completed
+
+Idle --> Done : Appointment finishes
+Done : Exit/Archive appointment after set time passes
+Done --> [*] : Appointment archived
+
+Idle --> Viewed : View appointment
+Viewed : Entry/Display details
+Viewed : Exit/Details viewed
+
+Viewed --> Idle : Viewing completed
+
+@enduml
+
+Component Diagram
+@startuml
+
+package "Files" {
+  [phpmailer <<file>>]
+  [fpdf181 <<file>>]
+  [CSS view <<file>>]
+  [jQuery <<file>>]
+  [AJAX <<file>>]
+  [Bootstrap <<file>>]
+}
+
+Files -->Interface
+package "Interface" {
+
+	[index.php] --> [login.php]
+	[index.php] --> [signup.php]
+
+	[login.php] --> [doctorMain.php]
+	[login.php] --> [receptionistMain.php]
+	[login.php] --> [patientMain.php]
+
+	[signup.php] --> [doctorMain.php]
+	[signup.php] --> [receptionistMain.php]
+	[signup.php] --> [patientMain.php]
+
+	[doctorMain.php] --> [DProfile.php]
+	[doctorMain.php] --> [DUpdateProfile.php]
+	[doctorMain.php] --> [DViewPatients.php]
+	[doctorMain.php] --> [DViewExaminations.php]
+
+	[receptionistMain.php] --> [RProfile.php]
+	[receptionistMain.php] --> [RUpdateProfile.php]
+	[receptionistMain.php] --> [RSearchReceptionist.php]
+	[receptionistMain.php] --> [RViewPatients.php]
+	[receptionistMain.php] --> [RViewDoctors.php]
+	[receptionistMain.php] --> [RViewFeedback.php]
+	[receptionistMain.php] --> [RAppointment.php]
+	[receptionistMain.php] --> [RAddPatient.php]
+	[receptionistMain.php] --> [RAddDoctor.php]
+	[receptionistMain.php] --> [RAddReceptionist.php]
+	[receptionistMain.php] --> [RViewExaminations.php]
+
+	[patientMain.php] --> [PProfile.php]
+	[patientMain.php] --> [PUpdateProfile.php]
+	[patientMain.php] --> [PViewDoctors.php]
+	[patientMain.php] --> [PLeaveFeedback.php]
+	[patientMain.php] --> [PViewExaminations.php]
+
+	[doctorMain.php] --> [DTimetable.php]
+	[patientMain.php] --> [PTimetable.php]
+	[receptionistMain.php] --> [RTimetable.php]
+	[doctorMain.php] --> [DMessages.php]
+	[patientMain.php] --> [PMessages.php]
+	[receptionistMain.php] --> [RMessages.php]
+
+	[doctorMain.php] --> [DViewStatistics.php]
+	[receptionistMain.php] --> [RViewStatistics.php]
+
+	[doctorMain.php] --> [DSearchPatient.php]
+	[receptionistMain.php] --> [RSearchPatient.php]
+
+	[receptionistMain.php] --> [RSearchDoctor.php]
+	[patientMain.php] --> [PSearchDoctor.php]
+
+
+	[doctorMain.php] --> [logout.php]
+	[receptionistMain.php] --> [logout.php]
+	[patientMain.php] --> [logout.php]
+}
+
+Interface -->Model
+
+package "Model" {
+  [database_class]
+  [validate_class]
+  [login_class]
+  [medical_record_class]
+  [receptionist_class]
+  [doctor_class]
+  [feedback_class]
+  [patient_class]
+  [crud_class]
+
+}
+[Model] --> [Database <<library>>]
+
+@enduml
+
+Deployment Diagram
+@startuml
+node "Client Web Server" as ClientWebServer {
+	node "Web Service" as WebService
+}
+
+node "Application" as Application {
+	folder "Files" as Files
+	folder "Interface" as Interface
+	folder "Model" as Model
+}
+
+node "Database Server" as DatabaseServer {
+	database "MySQL Database" as Database
+}
+
+ClientWebServer --> Application
+Application --> DatabaseServer
+@enduml
