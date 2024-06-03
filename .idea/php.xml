@@ -10,6 +10,14 @@
     <option name="highlightLevel" value="WARNING" />
     <option name="transferred" value="true" />
   </component>
+  <component name="PhpIncludePathManager">
+    <include_path>
+      <path value="$PROJECT_DIR$/3_Implementation/vendor/fontawesome/css" />
+      <path value="$PROJECT_DIR$/3_Implementation/vendor/fontawesome/fonts" />
+      <path value="$PROJECT_DIR$/3_Implementation/vendor/fontawesome/less" />
+      <path value="$PROJECT_DIR$/3_Implementation/vendor/fontawesome/scss" />
+    </include_path>
+  </component>
   <component name="PhpStanOptionsConfiguration">
     <option name="transferred" value="true" />
   </component>
